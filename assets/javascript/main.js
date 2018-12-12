@@ -34,7 +34,7 @@ function fillColor() {
 
 
 function callGifs() {
-    queryURL = "http://api.giphy.com/v1/gifs/search?q=" + tagClick + "&rating=g&limit=10&api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&offset=" + offset;
+    queryURL = "https://api.giphy.com/v1/gifs/search?q=" + tagClick + "&rating=g&limit=10&api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&offset=" + offset;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -113,7 +113,7 @@ function callFavGifs() {
         console.log(favStore);
     }
 
-    favURL = "http://api.giphy.com/v1/gifs?api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&ids=" + favKeyChain;
+    favURL = "https://api.giphy.com/v1/gifs?api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&ids=" + favKeyChain;
 
     $.ajax({
         url: favURL,
