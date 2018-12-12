@@ -37,6 +37,7 @@ nav .brand-logo.center {
 #favIcon {
     font-size: 40px;
     margin-right: 20px;
+    color: yellow;
 }
 
 #favCount {
@@ -59,6 +60,13 @@ nav .brand-logo.center {
     position: absolute;
     top: 263px;
     right: 70px;
+}
+
+#emptyID {
+    font-family: "battleslab", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 28px;
 }
 
 .row .col {
