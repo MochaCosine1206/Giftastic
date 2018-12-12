@@ -5,11 +5,65 @@
         overflow: hidden;
 
 }
-
-.col {
-    margin-right: 5px;
+nav {
+    line-height: 14px;
 }
 
+.nav-wrapper {
+    line-height: 59px;
+}
+
+nav .brand-logo.center {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    font-family: "battleslab", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 28px;
+}
+
+#card-area {
+    margin-top: 190px;
+}
+
+#fav-area {
+    position: fixed;
+    top: 254px;
+    right: 20px;
+    width: 400px;
+}
+
+#downButton {
+    position: absolute;
+    top: 263px;
+    right: 16px;
+}
+
+#favButton {
+    position: absolute;
+    top: 263px;
+    right: 70px;
+}
+
+.row .col {
+    padding: 0 .75rem;
+}
 .card {
-    padding: none
+    padding: none;
+    height: 379px;
+}
+
+.card .card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+    height: 79px;
+}
+
+
+
+#clickMore {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
 }

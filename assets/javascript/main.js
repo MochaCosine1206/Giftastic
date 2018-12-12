@@ -1,4 +1,4 @@
-var topic = ["cat", "monkey", "mouse"];
+var topic = ["random", "funny", "mouse"];
 var offset = 0;
 var colors = ["red", "pink", "purple", "deep-purple", "indigo", "blue", "light-blue", "cyan", "teal", "green", "light-green", "lime", "yellow", "amber", "orange", "deep-orange", "brown", "grey", "blue-grey"];
 var lightDark = ["lighten", "darken", "accent"];
@@ -7,6 +7,7 @@ var colorNumber = ["1", "2", "3", "4"]
 var colorCounter = 0;
 var tagClick;
 clickCounter = 0;
+favStore = [];
 
 
 fillColor();
@@ -30,7 +31,7 @@ function fillColor() {
 
 
 function callGifs() {
-    queryURL = "http://api.giphy.com/v1/gifs/search?q=" + tagClick + "&limit=10&api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&offset=" + offset;
+    queryURL = "http://api.giphy.com/v1/gifs/search?q=" + tagClick + "&rating=g&limit=10&api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&offset=" + offset;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
@@ -41,25 +42,49 @@ function callGifs() {
 
         for (var i = 0; i < 10; i++) {
             var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "gifCard" + [i]);
-            var gifPic = $("<div>").addClass("card-img").html("<img src=" + response.data[i].images.fixed_height.url + ">");
-            var gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light red").html('<i class="material-icons">favorite</i>');
-            // var gifFB = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">file_download</i>');
-            var gifRating = $("<span>").addClass("card-title").text("Rating: " + response.data[i].rating);
-            var gifDesc = $("<div>").addClass("card-content").text(response.data[i].title);
+            var gifPicDiv = $("<div>").addClass("card-img")
+            var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
+            // gifPic.on("click", function(){
+            //     var state = $(this).attr("data-state");
+            //     if (state === "still"){
+            //         $(this).attr("src", $(this).attr("data-animate"));
+            //         $(this).attr("data-state", "animate");
+            //     } else {
+            //         $(this).attr("src", $(this).attr("data-still"));
+            //         $(this).attr("data-state", "still");
+            //     }
+            // })
+            var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no");
+            var gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light red").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "no");
+            gifFav.on("click", function(){
+                var favState = $(this).attr("favState");
+                console.log(favState)
+                if (favState === "no") {
+                    $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light green");
+                    $(this).attr("favState", "yes");
+                    favStore.unshift($(this).attr("gifID"));
+                    console.log(favStore);
+                } else {
+                    $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light red");
+                    $(this).attr("favState", "no");
+                }
+            })
+            
+            var gifRating = $("<span>").addClass("card-title").html("<p class='flow-text'>Rating: " + response.data[i].rating + '</p>');
+            var gifDesc = $("<div>").addClass("card-content white").text(response.data[i].title);
             $("#gifCont").prepend(gifCard);
-            $("#gifCard" + [i]).prepend(gifPic, gifRating, gifDesc, gifFav );
+            gifPicDiv.append(gifPic);
+            $("#gifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav, gifDownLoad);
+            
         }
+        // below on click is to change state of div to favorite and push it to an object.   
+        
         
     })
 }
 
 
 
-// function moreGifs() {
-    
-//         callGifs();
-//     })
-// }
 
 function renderButton() {
     $("#button-area").empty();
@@ -104,6 +129,8 @@ $(document).ready(function(){
         console.log(topic);
         renderButton();
     });
+
+   
     
     
     
