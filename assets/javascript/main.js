@@ -6,8 +6,11 @@ var fullColorGamut = [];
 var colorNumber = ["1", "2", "3", "4"]
 var colorCounter = 0;
 var tagClick;
-clickCounter = 0;
-favStore = [];
+var clickCounter = 0;
+var favStore = [];
+var favKeyChain;
+var favCount;
+var gifFav;
 
 
 fillColor();
@@ -54,19 +57,35 @@ function callGifs() {
             //         $(this).attr("data-state", "still");
             //     }
             // })
+            function buttonColor() {
+                if (favStore.includes(response.data[i].id)) {
+                    console.log("yes");
+                    gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
+                } else {
+                    console.log("no");
+                    gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light red").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "no");
+                }
+            }
+            buttonColor();
             var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no");
-            var gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light red").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "no");
             gifFav.on("click", function(){
                 var favState = $(this).attr("favState");
                 console.log(favState)
                 if (favState === "no") {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light green");
                     $(this).attr("favState", "yes");
-                    favStore.unshift($(this).attr("gifID"));
-                    console.log(favStore);
+                    favStore.push($(this).attr("gifID"));
+                    localStorage.setItem("gifKey", JSON.stringify(favStore));
+                    favCount = favStore.length;
+                    $("#favCount").html(favCount);
                 } else {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light red");
                     $(this).attr("favState", "no");
+                    var removeFav = $(this).attr("gifID");
+                    favStore.splice(removeFav, 1);
+                    localStorage.setItem("gifKey", JSON.stringify(favStore));
+                    favCount = favStore.length;
+                    $("#favCount").html(favCount);
                 }
             })
             
@@ -81,6 +100,30 @@ function callGifs() {
         
         
     })
+}
+
+function callFavGifs() {
+    favStore = JSON.parse(localStorage.getItem("gifKey"));
+    console.log(favStore.length)
+    favCount = favStore.length;
+    favKeyChain = favStore.join();
+    console.log(favKeyChain);
+    if (!Array.isArray(favStore)) {
+        favStore = [];
+        console.log(favStore);
+      }
+
+      favURL = "http://api.giphy.com/v1/gifs?api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&ids=" + favKeyChain;
+
+      $.ajax({
+        url: favURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+
+      })
+      
+      
 }
 
 
@@ -104,6 +147,8 @@ function renderButton() {
 
 
 $(document).ready(function(){
+    callFavGifs();
+    $("#favCount").html(favCount);
     renderButton();
     $(document).on("click", "#topicButton",  function(){
         clickCounter++;
