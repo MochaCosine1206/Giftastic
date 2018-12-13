@@ -9,7 +9,7 @@ var tagClick;
 var clickCounter = 0;
 var favStore = [];
 var favKeyChain;
-var favCount;
+var favCount = 0;
 var gifFav;
 
 
@@ -107,10 +107,10 @@ function callGifs() {
 
 function callFavGifs() {
     favStore = JSON.parse(localStorage.getItem("gifKey"));
-    // console.log(favStore.length)
+    console.log(favStore.length)
     favCount = favStore.length;
     favKeyChain = favStore.join();
-    // console.log(favKeyChain);
+    console.log(favKeyChain);
     if (!Array.isArray(favStore)) {
         favStore = [];
         console.log(favStore);
@@ -198,7 +198,10 @@ function renderButton() {
 
 
 $(document).ready(function () {
-    // callFavGifs();
+    if (favStore != null) {
+        callFavGifs();
+    } 
+    
     favEmpty();
     $("#favCount").html(favCount);
     renderButton();
