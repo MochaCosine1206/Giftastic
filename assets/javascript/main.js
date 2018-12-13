@@ -67,10 +67,8 @@ function callGifs() {
                 }
             }
             buttonColor();
-            var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no");
-            gifDownLoad.on("click", function(){
+            // var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no").attr("src", response.data[i].images.fixed_height.url);
 
-            })
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
                 console.log(favState)
@@ -99,7 +97,7 @@ function callGifs() {
             var gifDesc = $("<div>").addClass("card-content white").text(response.data[i].title);
             $("#gifCont").prepend(gifCard);
             gifPicDiv.append(gifPic);
-            $("#gifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav, gifDownLoad);
+            $("#gifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav);
 
         }
         // below on click is to change state of div to favorite and push it to an object.   
@@ -109,7 +107,7 @@ function callGifs() {
 }
 
 function callFavGifs() {
-    
+
     console.log(favStore)
     favCount = favStore.length;
     favKeyChain = favStore.join();
@@ -133,7 +131,7 @@ function callFavGifs() {
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
             gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
-            var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no")
+            // var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no")
 
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
@@ -162,7 +160,7 @@ function callFavGifs() {
             var gifDesc = $("<div>").addClass("card-content white").text(response.data[i].title);
             $("#favCard").append(gifCard);
             gifPicDiv.append(gifPic);
-            $("#favGifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav, gifDownLoad);
+            $("#favGifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav);
         }
     })
 
@@ -202,11 +200,11 @@ function renderButton() {
 
 
 $(document).ready(function () {
-    if (localStorage.getItem("gifKey") !== null){
+    if (localStorage.getItem("gifKey") !== null) {
         favStore = JSON.parse(localStorage.getItem("gifKey"));
         favCount = favStore.length
         $("#favCount").html(favCount);
-        callFavGifs();   
+        callFavGifs();
         console.log("before favEmpty")
         favEmpty();
         console.log("after favEmpty")
