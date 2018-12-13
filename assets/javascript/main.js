@@ -9,7 +9,7 @@ var tagClick;
 var clickCounter = 0;
 var favStore = [];
 var favKeyChain;
-var favCount = 0;
+var favCount;
 var gifFav;
 
 
@@ -198,11 +198,12 @@ function renderButton() {
 
 
 $(document).ready(function () {
-    console.log(localStorage.getItem("gifKey"))
-    if (favStore != null) {
+    console.log(favStore)
+    if (favStore.length > 0) {
         callFavGifs();
-    } 
-    favCount = 0;
+    } else {
+        favCount = 0;
+    }
     favEmpty();
     $("#favCount").html(favCount);
     renderButton();
