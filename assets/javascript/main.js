@@ -198,6 +198,7 @@ function renderButton() {
 
 
 $(document).ready(function () {
+    console.log(localStorage.getItem("gifKey"))
     if (favStore != null) {
         callFavGifs();
     } 
