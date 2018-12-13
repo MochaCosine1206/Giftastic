@@ -68,6 +68,9 @@ function callGifs() {
             }
             buttonColor();
             var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no");
+            gifDownLoad.on("click", function(){
+
+            })
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
                 console.log(favState)
@@ -104,10 +107,10 @@ function callGifs() {
 
 function callFavGifs() {
     favStore = JSON.parse(localStorage.getItem("gifKey"));
-    console.log(favStore.length)
+    // console.log(favStore.length)
     favCount = favStore.length;
     favKeyChain = favStore.join();
-    console.log(favKeyChain);
+    // console.log(favKeyChain);
     if (!Array.isArray(favStore)) {
         favStore = [];
         console.log(favStore);
@@ -126,7 +129,7 @@ function callFavGifs() {
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
             gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
-            var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no");
+            var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no")
 
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
@@ -195,7 +198,7 @@ function renderButton() {
 
 
 $(document).ready(function () {
-    callFavGifs();
+    // callFavGifs();
     favEmpty();
     $("#favCount").html(favCount);
     renderButton();
