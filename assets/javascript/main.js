@@ -201,7 +201,7 @@ $(document).ready(function () {
     if (favStore != null) {
         callFavGifs();
     } 
-    
+    favCount = 0;
     favEmpty();
     $("#favCount").html(favCount);
     renderButton();
