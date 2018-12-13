@@ -78,9 +78,11 @@ function callGifs() {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light green");
                     $(this).attr("favState", "yes");
                     favStore.push($(this).attr("gifID"));
+                    console.log(favStore.length);
                     localStorage.setItem("gifKey", JSON.stringify(favStore));
                     favCount = favStore.length;
                     $("#favCount").html(favCount);
+                    favStore = JSON.parse(localStorage.getItem("gifKey"));
                 } else {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light red");
                     $(this).attr("favState", "no");
@@ -89,6 +91,7 @@ function callGifs() {
                     localStorage.setItem("gifKey", JSON.stringify(favStore));
                     favCount = favStore.length;
                     $("#favCount").html(favCount);
+                    favStore = JSON.parse(localStorage.getItem("gifKey"));
                 }
             })
 
@@ -106,15 +109,15 @@ function callGifs() {
 }
 
 function callFavGifs() {
-    favStore = JSON.parse(localStorage.getItem("gifKey"));
-    console.log(favStore.length)
+    
+    console.log(favStore)
     favCount = favStore.length;
     favKeyChain = favStore.join();
     console.log(favKeyChain);
-    if (!Array.isArray(favStore)) {
-        favStore = [];
-        console.log(favStore);
-    }
+    // if (!Array.isArray(favStore)) {
+    //     favStore = [];
+    //     console.log(favStore);
+    // }
 
     favURL = "https://api.giphy.com/v1/gifs?api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&ids=" + favKeyChain;
 
@@ -125,7 +128,8 @@ function callFavGifs() {
         console.log(response);
         $("#favCard").empty()
         for (var i = 0; i < favStore.length; i++) {
-            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "gifCard" + [i]);
+            console.log(favStore.length);
+            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "favGifCard" + [i]);
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
             gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
@@ -158,7 +162,7 @@ function callFavGifs() {
             var gifDesc = $("<div>").addClass("card-content white").text(response.data[i].title);
             $("#favCard").append(gifCard);
             gifPicDiv.append(gifPic);
-            $("#gifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav, gifDownLoad);
+            $("#favGifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav, gifDownLoad);
         }
     })
 
@@ -198,9 +202,17 @@ function renderButton() {
 
 
 $(document).ready(function () {
-    console.log(favStore)
-    callFavGifs();
-    favEmpty();
+    if (localStorage.getItem("gifKey") !== null){
+        favStore = JSON.parse(localStorage.getItem("gifKey"));
+        favCount = favStore.length
+        $("#favCount").html(favCount);
+        callFavGifs();   
+        console.log("before favEmpty")
+        favEmpty();
+        console.log("after favEmpty")
+
+    }
+    favCount = favStore.length;
     $("#favCount").html(favCount);
     renderButton();
     $(document).on("click", "#topicButton", function () {
@@ -217,6 +229,8 @@ $(document).ready(function () {
         colorCounter += 10;
         callGifs();
     })
+
+    $(document).on("click", "#favPage", callFavGifs);
 
 
     // $("body").css("background-image", "linear-gradient(to bottom right, " + color0 + ", " + color9);
