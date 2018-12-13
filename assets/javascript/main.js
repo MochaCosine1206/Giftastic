@@ -199,11 +199,7 @@ function renderButton() {
 
 $(document).ready(function () {
     console.log(favStore)
-    if (favStore.length > 0) {
-        callFavGifs();
-    } else {
-        favCount = 0;
-    }
+    callFavGifs();
     favEmpty();
     $("#favCount").html(favCount);
     renderButton();
