@@ -1,4 +1,5 @@
-var topic = ["random", "funny", "mouse"];
+var initialTopic = ["random", "funny", "mouse"];
+var topic = initialTopic;
 var offset = 0;
 var colors = ["red", "pink", "purple", "deep-purple", "indigo", "blue", "light-blue", "cyan", "teal", "green", "light-green", "lime", "yellow", "amber", "orange", "deep-orange", "brown", "grey", "blue-grey"];
 var lightDark = ["lighten", "darken", "accent"];
@@ -11,6 +12,7 @@ var favStore = [];
 var favKeyChain;
 var favCount;
 var gifFav;
+var divCount = 0;
 
 
 fillColor();
@@ -42,11 +44,12 @@ function callGifs() {
     }).then(function (response) {
         console.log(response);
         console.log(response.data[0].rating);
-
+        var newDiv = $("<div>").addClass("row").attr("id", "GifCont" + divCount);
         for (var i = 0; i < 10; i++) {
-            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "gifCard" + [i]);
+            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "gifCard" + [i] + divCount);
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
+            //----Here is where I would have the click pause function, but I decided the app would work better without it--//
             // gifPic.on("click", function(){
             //     var state = $(this).attr("data-state");
             //     if (state === "still"){
@@ -67,7 +70,6 @@ function callGifs() {
                 }
             }
             buttonColor();
-            // var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no").attr("src", response.data[i].images.fixed_height.url);
 
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
@@ -95,9 +97,10 @@ function callGifs() {
 
             var gifRating = $("<span>").addClass("card-title").html("<p class='flow-text'>Rating: " + response.data[i].rating + '</p>');
             var gifDesc = $("<div>").addClass("card-content white").text(response.data[i].title);
-            $("#gifCont").prepend(gifCard);
+            $("#divCont").append(newDiv);
+            newDiv.append(gifCard);
             gifPicDiv.append(gifPic);
-            $("#gifCard" + [i]).prepend(gifPicDiv, gifRating, gifDesc, gifFav);
+            $("#gifCard" + [i] + divCount).prepend(gifPicDiv, gifRating, gifDesc, gifFav);
 
         }
         // below on click is to change state of div to favorite and push it to an object.   
@@ -112,10 +115,6 @@ function callFavGifs() {
     favCount = favStore.length;
     favKeyChain = favStore.join();
     console.log(favKeyChain);
-    // if (!Array.isArray(favStore)) {
-    //     favStore = [];
-    //     console.log(favStore);
-    // }
 
     favURL = "https://api.giphy.com/v1/gifs?api_key=fOl7fKImZ3vPLJkKlPB9WHGkhIV488wM&ids=" + favKeyChain;
 
@@ -131,7 +130,6 @@ function callFavGifs() {
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
             gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
-            // var gifDownLoad = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light blue").html('<i class="material-icons">file_download</i>').attr("id", "downButton").attr("gifID", response.data[i].id).attr("favState", "no")
 
             gifFav.on("click", function () {
                 var favState = $(this).attr("favState");
@@ -174,27 +172,58 @@ function favEmpty() {
         console.log("yes");
         var emptyMessage = $("<div>");
         emptyMessage.attr("id", "emptyId");
-        emptyMessage.text("It's all Gone!!!<br>").html("<a href='index.html'>Head Back to the Home Page for More Great GIFS!!!</a>")
+        emptyMessage.text("It's all Gone!!!<br>").html("<a href='#'>Head Back to the Home Page for More Great GIFS!!!</a>")
         $("#favCard").append(emptyMessage);
+        $("#emptyId").on("click", function () {
+            $("#favPage").hide();
+            $("#frontPage, .nav-content").show();
+        })
+
     } else {
         console.log("no");
     }
 }
 
 function renderButton() {
+    console.log("here");
     $("#button-area").empty();
+
+    if (localStorage.getItem("tagKey") !== null) {
+        console.log("not null");
+        topic = JSON.parse(localStorage.getItem("tagKey"));
+    } else {
+        topic = initialTopic;
+        localStorage.setItem("tagKey", JSON.stringify(topic));
+        console.log(topic.length);
+    }
 
     for (var i = 0; i < topic.length; i++) {
         var button = $("<a>");
-        button.addClass("chip " + fullColorGamut[i]);
+        var closeIcon = $("<i>").addClass("material-icons").attr("id", "closeIcon").text("close")
+        button.addClass("btn-small waves-effect waves-light " + colors[i]);
         button.attr("id", "topicButton");
         button.attr("data-name", topic[i]);
         button.text(topic[i]);
-        button.append('<i class="close material-icons">close</i>');
+        button.append(closeIcon);
         $("#button-area").append(button);
 
 
     }
+
+    $("a #closeIcon").on("click", function () {
+        $(this).parent("a").remove();
+        var removeTag = $(this).closest("a").attr("data-name");
+        var tagIndex = topic.indexOf(removeTag);
+        if (tagIndex !== -1) {
+            console.log(removeTag);
+            topic.splice(tagIndex, 1);
+            console.log(topic);
+        }
+
+        localStorage.setItem("tagKey", JSON.stringify(topic));
+        topic = JSON.parse(localStorage.getItem("tagKey"));
+    renderButton();
+    });
 }
 
 
@@ -218,28 +247,41 @@ $(document).ready(function () {
         console.log(clickCounter);
         offset = 0;
         tagClick = $(this).attr("data-name");
+        divCount++;
         console.log($(this))
+        $("#divCont div").not("#clickMore").remove();
         $(this).off("click");
         callGifs();
     });
     $(document).on("click", "#clickMore", function () {
         offset += 10;
         colorCounter += 10;
+        divCount++;
         callGifs();
     })
 
-    $(document).on("click", "#favPage", callFavGifs);
+    $("#favIcon").on("click", function () {
+        callFavGifs();
+        $("#frontPage, .nav-content").hide();
+        $("#favPage").show();
+    })
 
+    $("#homePage").on("click", function () {
+        $("#favPage").hide();
+        $("#frontPage, .nav-content").show();
 
-    // $("body").css("background-image", "linear-gradient(to bottom right, " + color0 + ", " + color9);
+    })
+
     $("#add-tag").on("click", function (event) {
         event.preventDefault();
         var tagInput = $("#tag-input").val().trim();
         topic.push(tagInput);
+        localStorage.setItem("tagKey", JSON.stringify(topic));
         console.log(topic);
         renderButton();
     });
 
+   
 
 
 

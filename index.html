@@ -18,9 +18,9 @@
 
 <body>
     <div class="navbar-fixed">
-        <nav class="nav-extended white">
+        <nav class="nav-extended white" id="buttonContainer">
             <div class="nav-wrapper red">
-                <a href="index.html" class="brand-logo center">GifBank</a>
+                <a href="#" class="brand-logo center" id="homePage">GifBank</a>
                 <!-- <div class="switch">
                         <label>
                           Gifs
@@ -29,44 +29,45 @@
                           Stickers
                         </label>
                       </div> -->
-                      <a href="favorites.html"><i class="right material-icons" id="favIcon">star</i></a>
-                      <div id="favCount" class="btn-floating halfway-fab waves-effect waves-light center blue"></div>
+                <a href="#"><i class="right material-icons" id="favIcon">star</i></a>
+                <div id="favCount" class="btn-floating halfway-fab waves-effect waves-light center blue"></div>
             </div>
             <br>
-    <div class="nav-content">
-    <div class="row white">
-        <div class="col s8">
-            <div id="button-area"></div>
-            <br><br>
-        </div>
-        <div class="col s3">
-            <div id="input-area">
-                <form id="tag-form">
-                    <label for="tag-input">Enter tag description:  funny, dog, etc.</label>
-                    <input type="text" id="tag-input">
-                    <input id="add-tag" type="submit" value="Create" class="btn">
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-</nav>
-</div>
-    <div class="row" id="card-area">
-        <div class="col s12">
-                <div class="waves-effect waves-light btn-small" id="clickMore">Click for More!</div>
-            <br><br>
-            <div class="row" id="gifCont">
-                <br>
-            </div>
 
-        </div>
-        <!-- <div class="col m3" id="fav-area">
-            <div class="card-panel white">
-                <span class="teal-text">Favorites here!</span>
+            <div class="nav-content">
+                <div class="row white">
+                    <div class="col s8">
+                        <p class="grey-text" id="hint">Click a tag to load gifs!</p>
+                        <div id="button-area"></div>
+                        <br><br>
+                    </div>
+                    <div class="col s3">
+                        <div id="input-area">
+                            <form id="tag-form">
+                                <label for="tag-input">Enter tag description: funny, dog, etc.</label>
+                                <input type="text" id="tag-input">
+                                <input id="add-tag" type="submit" value="Create" class="btn-small deep-orange darken-1">
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div> -->
+        </nav>
     </div>
+    <div id="frontPage">
+        <div class="row" id="card-area">
+            <div class="col s12 m11 offset-m1" id="divCont">
+                <div class="waves-effect waves-light btn-small" id="clickMore">Click for More!</div>
+                <br><br>
+            </div>
+        </div>
+    </div>
+    <div id="favPage">
+        <div class="container" id="favContain">
+            <div class="card center" id="favCard">
+
+            </div>
+        </div>
     </div>
 </body>
 
