@@ -8,6 +8,7 @@ body {
         align-items: center;
         overflow: hidden;
         border-radius: 11px;
+        line-height: 10px;
 
 }
 nav {
@@ -142,4 +143,7 @@ nav .brand-logo.center {
 
 #favCard {
     margin-top: 39px;
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }

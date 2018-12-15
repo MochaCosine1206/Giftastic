@@ -87,7 +87,11 @@ function callGifs() {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light red");
                     $(this).attr("favState", "no");
                     var removeFav = $(this).attr("gifID");
-                    favStore.splice(removeFav, 1);
+                    var favIndex = favStore.indexOf(removeFav);
+                    console.log(favIndex);
+                    if (favIndex !== -1) {
+                        favStore.splice(favIndex, 1);
+                    }
                     localStorage.setItem("gifKey", JSON.stringify(favStore));
                     favCount = favStore.length;
                     $("#favCount").html(favCount);
@@ -145,10 +149,17 @@ function callFavGifs() {
                     $(this).attr("class", "btn-floating halfway-fab waves-effect waves-light red");
                     $(this).attr("favState", "no");
                     var removeFav = $(this).attr("gifID");
-                    favStore.splice(removeFav, 1);
+                    var thisFav = $("[gifID ='" + removeFav + "']");
+                    console.log(thisFav);
+                    var favIndex = favStore.indexOf(removeFav);
+                    console.log(favIndex);
+                    if (favIndex !== -1) {
+                        favStore.splice(favIndex, 1);
+                    }
                     localStorage.setItem("gifKey", JSON.stringify(favStore));
                     favCount = favStore.length;
                     $("#favCount").html(favCount);
+                    thisFav.attr("class", "btn-floating halfway-fab waves-effect waves-light red").attr("favState", "no");
                     $(this).parent().remove()
                     favEmpty();
                 }
