@@ -96,6 +96,7 @@ function callGifs() {
                     favCount = favStore.length;
                     $("#favCount").html(favCount);
                     favStore = JSON.parse(localStorage.getItem("gifKey"));
+                    favEmpty();
                 }
             })
 
@@ -130,7 +131,7 @@ function callFavGifs() {
         $("#favCard").empty()
         for (var i = 0; i < favStore.length; i++) {
             console.log(favStore.length);
-            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "favGifCard" + [i]);
+            var gifCard = $("<div>").addClass("card " + fullColorGamut[i + colorCounter] + " z-depth-3 col s12 m3").attr("id", "favGifCard" + [i]).attr("cardGroup", "cardItem");
             var gifPicDiv = $("<div>").addClass("card-img")
             var gifPic = $("<img>").attr("src", response.data[i].images.fixed_height.url).attr("data-still", response.data[i].images.fixed_height_small_still.url).attr("data-animate", response.data[i].images.fixed_height_small.url).attr("data-state", "still");
             gifFav = $("<a>").addClass("btn-floating halfway-fab waves-effect waves-light green").html('<i class="material-icons">stars</i>').attr("id", "favButton").attr("gifID", response.data[i].id).attr("favState", "yes");
@@ -181,6 +182,7 @@ function callFavGifs() {
 function favEmpty() {
     if (favStore.length === 0) {
         console.log("yes");
+        $('div[cardGroup="cardItem"]').remove();
         var emptyMessage = $("<div>");
         emptyMessage.attr("id", "emptyId");
         emptyMessage.text("It's all Gone!!!<br>").html("<a href='#'>Head Back to the Home Page for More Great GIFS!!!</a>")
